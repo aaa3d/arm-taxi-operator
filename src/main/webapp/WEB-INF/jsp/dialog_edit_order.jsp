@@ -23,7 +23,7 @@ js скрипты - им нужен только путь - его реализ�
 
 
 </head>
-<body onload="onLoadPage()">
+<body>
 
 <form:form id="dialog_edit_form" method="POST"  modelAttribute="edited_order" action="/arm-taxi-operator/order/save" >
  
@@ -33,18 +33,16 @@ js скрипты - им нужен только путь - его реализ�
            Телефон 2: <form:input path="connectPhone"  class="easyui-textbox" data-options="" style="width:100px"/> 
 	   Пассажир: <form:input path="clientName" class="easyui-textbox" data-options="" style="width:120px"/> 
 	</p>
-	<b>Откуда:</b>
+	<b>Откуда -> Куда:</b>
 	<p><form:input path="addrFrom"  prompt="Улица" class="easyui-textbox" data-options="" style="width:100px"/> 
 	   <form:input path="houseFrom"  prompt="Дом" class="easyui-textbox" data-options="" style="width:100px"/> 
 	   <form:input path="flatFrom" prompt="Квартира" class="easyui-textbox" data-options="" style="width:120px"/> 
 	   <form:input path="addrFromName" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/> 
 	</p>
-	
-	<b>Куда:</b>
 	<p><form:input path="addrTo" prompt="Улица" class="easyui-textbox" data-options="" style="width:100px"/> 
 	   <form:input path="houseTo"  prompt="Дом" class="easyui-textbox" data-options="" style="width:100px"/> 
 	   <form:input path="addrToName" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/>
-	   <input type="CheckBox" id="check_show_interpoints" onclick="onShowInterpointClick()">через:</input>
+           <br><input type="CheckBox" id="check_show_interpoints" onclick="onShowInterpointClick()">через:</input>
            <b>Доп опции:</b>
            <select class="easyui-combobox" name="state"  data-options=" multiple:true,panelHeight:'auto'" >
                 <option value="0001">Отдаленный район(+20)</option>
@@ -52,10 +50,11 @@ js скрипты - им нужен только путь - его реализ�
                 <option value="0100">Животное(+20)</option>
                 <option value="1000">Плохая дорого/Грунт(+20)</option>
            </select>
-           
-           
-           
 	</p>	
+        <p>
+            <br><input type="CheckBox" id="check_show_bnal" onclick="onShowBnalClick()">БНАЛ:</input>
+        </p>
+        
 	
 	<div id="p2" class="easyui-panel" title="Промежуточные точки" 
         style="padding:00px;background:#fafafa;"
@@ -70,7 +69,31 @@ js скрипты - им нужен только путь - его реализ�
 		</c:forEach>
     
 	</div>
-    </div>
+        </div>
+        
+        <div id="pBnal" class="easyui-panel" title="Безнал" 
+        style="padding:00px;background:#fafafa;"
+        data-options="collapsible:true, closed:true">
+            <div title="Title1" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
+                <input id="OrgId" class="easyui-combobox" name="language" style="width:100%;" data-options="
+                    url:'<c:url value="/json/organizations"/>',
+                    method:'get',
+                    valueField: 'id',
+                    textField: 'text',
+                    label: 'Организация',
+                    labelPosition: 'top'
+                ">
+                <input id="OrgDetailId" class="easyui-combobox" name="language" style="width:100%;" data-options="
+                    valueField: 'id',
+                    textField: 'text',
+                    label: 'Сотрудник организации',
+                    labelPosition: 'top'
+                ">
+                
+		
+    
+	</div>
+        </div>
     
   
   

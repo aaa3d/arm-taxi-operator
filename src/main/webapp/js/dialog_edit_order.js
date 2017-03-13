@@ -8,3 +8,14 @@ else{
 
 }
 
+
+
+function onShowBnalClick(){
+if ($("#check_show_bnal").prop("checked")){
+	$('#pBnal').panel('open',{	});    
+}
+else{
+	$('#pBnal').panel('close',{	});    
+}
+
+}
