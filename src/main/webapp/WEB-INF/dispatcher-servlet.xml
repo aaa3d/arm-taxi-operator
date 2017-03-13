@@ -43,7 +43,7 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
-		<property name="url" value="jdbc:sqlserver://188.168.48.117:14333;DatabaseName=taxa" />
+		<property name="url" value="jdbc:sqlserver://192.168.100.238:1433;DatabaseName=taxa" />
 		<property name="username" value="taxaadmin" />
 		<property name="password" value="654321" />
 	</bean>
@@ -78,7 +78,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">${db.hibernate.dialect}</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
 				<prop key="hibernate.format_sql">false</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.connection.release_mode">auto</prop>

@@ -34,22 +34,22 @@ js скрипты - им нужен только путь - его реализ�
 	   Пассажир: <form:input path="clientName" class="easyui-textbox" data-options="" style="width:120px"/> 
 	</p>
 	<b>Откуда -> Куда:</b>
-	<p><form:input path="addrFrom"  prompt="Улица" class="easyui-textbox" data-options="" style="width:100px"/> 
+        
+        
+        <c:url var="address_request_url" value="/json/streets"/> 
+        
+        
+	<p><form:input path="addrFrom"  prompt="Улица" class="easyui-combobox" data-options="mode: 'remote', url:'${address_request_url}',method:'get',valueField:'id',textField:'text'" style="width:200px"/> 
 	   <form:input path="houseFrom"  prompt="Дом" class="easyui-textbox" data-options="" style="width:100px"/> 
 	   <form:input path="flatFrom" prompt="Квартира" class="easyui-textbox" data-options="" style="width:120px"/> 
 	   <form:input path="addrFromName" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/> 
 	</p>
-	<p><form:input path="addrTo" prompt="Улица" class="easyui-textbox" data-options="" style="width:100px"/> 
+	<p><form:input path="addrTo"  prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: myLoaderStreet, method:'get',valueField:'id',textField:'text'" style="width:200px"/> 
+            
 	   <form:input path="houseTo"  prompt="Дом" class="easyui-textbox" data-options="" style="width:100px"/> 
 	   <form:input path="addrToName" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/>
            <br><input type="CheckBox" id="check_show_interpoints" onclick="onShowInterpointClick()">через:</input>
-           <b>Доп опции:</b>
-           <select class="easyui-combobox" name="state"  data-options=" multiple:true,panelHeight:'auto'" >
-                <option value="0001">Отдаленный район(+20)</option>
-                <option value="0010">Багаж(+30)</option>
-                <option value="0100">Животное(+20)</option>
-                <option value="1000">Плохая дорого/Грунт(+20)</option>
-           </select>
+           
 	</p>	
         <p>
             <br><input type="CheckBox" id="check_show_bnal" onclick="onShowBnalClick()">БНАЛ:</input>
@@ -94,6 +94,13 @@ js скрипты - им нужен только путь - его реализ�
     
 	</div>
         </div>
+                    
+           <select class="easyui-combobox" name="state"  style="width:100%;" data-options=" multiple:true,label: 'Доп опции:',labelPosition: 'top'" >
+                <option value="0001">Отдаленный район(+20)</option>
+                <option value="0010">Багаж(+30)</option>
+                <option value="0100">Животное(+20)</option>
+                <option value="1000">Плохая дорого/Грунт(+20)</option>
+           </select>
     
   
   

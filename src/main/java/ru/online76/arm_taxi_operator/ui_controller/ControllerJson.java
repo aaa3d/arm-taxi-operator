@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.transform.Transformers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 
@@ -85,7 +87,7 @@ public class ControllerJson {
 	
 
     @Transactional
-    @RequestMapping(value = "/organizations", method = RequestMethod.GET, headers="Accept=*/*",  produces="application/json;; charset=UTF-8")
+    @RequestMapping(value = "/organizations", method = RequestMethod.GET, headers="Accept=*/*",  produces="application/javascript;; charset=UTF-8")
     @ResponseBody
     public List work_orders_json(@RequestParam(required = false) Integer hidden_sort_column_index, @RequestParam(required = false) String hidden_sort_column_direction, ModelMap modelMap) {
 
@@ -96,6 +98,53 @@ public class ControllerJson {
 "where AgreementStatus=1\n" +
 "order by Name");
         
+/*                
+        Query query = session.createSQLQuery(
+"select s.stock_code from stock s where s.stock_code = :stockCode")
+.setParameter("stockCode", "7277");
+        */
+        List result = query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+        //List<Orders> list = database.getgetWorkOrdersList(getJournalTableFieldName(hidden_sort_column_index), hidden_sort_column_direction);
+       // List<work_orders_json> result_list = new  ArrayList<work_orders_json>();
+        
+       // datagrid_data data = new datagrid_data();
+        //data.LoadOrdersList(list);
+        
+        /*
+        for (Order order: list){
+            work_orders_json result = new work_orders_json();
+            result.ID = order.getID().toString();
+            result.AddrFrom = order.GetAddrFromString();
+            result.AddrTo = order.GetAddrToString();
+            result.Phone = order.GetPhoneString();
+            result.Time = order.GetTmString();
+            result.CarName = order.GetCarString();
+            
+            result_list.add(result);
+        }*/
+     
+        
+        return result;
+    }
+    
+    @Transactional
+    @RequestMapping(value = "/streets", method = RequestMethod.GET,  produces =MediaType.APPLICATION_JSON_VALUE )
+    @ResponseBody
+    public List streets_json(@RequestParam(required = false) String q) {
+        
+        System.out.println("streets_json. q = \n"+q);
+
+        LinkedHashMap map = new LinkedHashMap();
+        
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(""+
+"SELECT DISTINCT\n" +
+"  street as 'text', \n" +
+"  DENSE_RANK() OVER (ORDER BY street) as id\n" +
+"FROM gis_adresses where city='Ярославль' and state< 10 and  not street like '[__]%'and street like :q");
+        if (q == null)
+            q = "";
+        q = "%"+q+"%";
+        query.setParameter("q", q);
 /*                
         Query query = session.createSQLQuery(
 "select s.stock_code from stock s where s.stock_code = :stockCode")
