@@ -7,7 +7,7 @@
 
 <html lang="ru">
 <head>
-<title>Общий журнал документов</title>
+<title>Редактирование заказа</title>
 
 <%@include file="styles.jsp" %>
 <%@include file="frameworks_scripts.jsp" %>
@@ -39,43 +39,41 @@ js скрипты - им нужен только путь - его реализ�
         <c:url var="address_request_url" value="/json/streets"/> 
         
         
-	<p><form:input path="addrFrom"  prompt="Улица" class="easyui-combobox" data-options="mode: 'remote', url:'${address_request_url}',method:'get',valueField:'id',textField:'text'" style="width:200px"/> 
-	   <form:input path="houseFrom"  prompt="Дом" class="easyui-textbox" data-options="" style="width:100px"/> 
-	   <form:input path="flatFrom" prompt="Квартира" class="easyui-textbox" data-options="" style="width:120px"/> 
+	<p>
+                    <form:input path="addrFrom"  prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: loaderStreet, method:'get',valueField:'text',textField:'text'" style="width:200px"/> 
+	   <form:input path="houseFrom"  prompt="Дом" class="easyui-combobox" data-options="mode:'remote', loader: loaderHouseForStreetFrom, method:'get',valueField:'text',textField:'text'" style="width:100px"/> 
+	   <form:input path="flatFrom" prompt="Квартира" class="easyui-textbox" data-options="" style="width:60px"/> 
 	   <form:input path="addrFromName" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/> 
+                    
 	</p>
-	<p><form:input path="addrTo"  prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: myLoaderStreet, method:'get',valueField:'id',textField:'text'" style="width:200px"/> 
-            
-	   <form:input path="houseTo"  prompt="Дом" class="easyui-textbox" data-options="" style="width:100px"/> 
+	<p>
+                    <c:forEach var="i" begin="1" end="4">
+                    <div id="div_dop_address${i}"   <c:if test="${i==3}">  style="display:none"  </c:if>>
+		<form:input path="inerpoint${i}_address" prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: loaderStreet, method:'get',valueField:'text',textField:'text'" style="width:200px"/> 
+		<form:input path="inerpoint${i}_house"  prompt="Дом" class="easyui-combobox" data-options="mode:'remote', loader: loaderHouseForStreet${i}, method:'get',valueField:'text',textField:'text'" style="width:100px"/> 
+		<form:input path="inerpoint${i}_name" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/>
+                                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="onRemoveAddressClick(${i})"></a>
+                        </div>
+                    </c:forEach>
+                    
+                    
+
+                    
+                    <form:input path="addrTo"  prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: loaderStreet, method:'get',valueField:'text',textField:'text'" style="width:200px"/> 
+                    <form:input path="houseTo"  prompt="Дом" class="easyui-combobox" data-options="mode:'remote', loader: loaderHouseForStreetTo, method:'get',valueField:'text',textField:'text'" style="width:100px"/> 
 	   <form:input path="addrToName" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/>
-           <br><input type="CheckBox" id="check_show_interpoints" onclick="onShowInterpointClick()">через:</input>
-           
+                    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="onAddAddressClick(0)"></a>
 	</p>	
         <p>
             <br><input type="CheckBox" id="check_show_bnal" onclick="onShowBnalClick()">БНАЛ:</input>
         </p>
         
 	
-	<div id="p2" class="easyui-panel" title="Промежуточные точки" 
-        style="padding:00px;background:#fafafa;"
-        data-options="collapsible:true, closed:true">
-			
-		 <div title="Title1" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
-		<c:forEach var="i" begin="1" end="4">
-		<form:input path="inerpoint${i}_address" prompt="Улица" class="easyui-textbox" data-options="" style="width:100px"/> 
-		<form:input path="inerpoint${i}_house"  prompt="Дом" class="easyui-textbox" data-options="" style="width:100px"/> 
-		<form:input path="inerpoint${i}_name" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/> <br>
-    
-		</c:forEach>
-    
-	</div>
-        </div>
         
-        <div id="pBnal" class="easyui-panel" title="Безнал" 
-        style="padding:00px;background:#fafafa;"
+        <div id="pBnal" class="easyui-panel" style="padding:00px;background:#fafafa;width:305px;"
         data-options="collapsible:true, closed:true">
-            <div title="Title1" data-options="iconCls:'icon-save'" style="overflow:auto;padding:10px;">
-                <input id="OrgId" class="easyui-combobox" name="language" style="width:100%;" data-options="
+
+                <input id="OrgId" class="easyui-combobox" name="language" style="width:300px;" data-options="
                     url:'<c:url value="/json/organizations"/>',
                     method:'get',
                     valueField: 'id',
@@ -83,16 +81,10 @@ js скрипты - им нужен только путь - его реализ�
                     label: 'Организация',
                     labelPosition: 'top'
                 ">
-                <input id="OrgDetailId" class="easyui-combobox" name="language" style="width:100%;" data-options="
-                    valueField: 'id',
-                    textField: 'text',
-                    label: 'Сотрудник организации',
-                    labelPosition: 'top'
-                ">
                 
-		
-    
-	</div>
+                <input id="OrgDetailId" class="easyui-combobox"  style="width:300px;" data-options="mode:'remote', loader: loaderOrganizationDetail, method:'get',valueField:'id',textField:'text',label: 'Сотрудник/отдел организации', labelPosition: 'top'">
+                <input id="OrganizationSubDetailId" class="easyui-combobox" style="width:300px;" data-options="mode:'remote', loader: loaderOrganizationSubDetail, method:'get',valueField:'id',textField:'text',label: 'Сотрудник', labelPosition: 'top'">
+
         </div>
                     
            <select class="easyui-combobox" name="state"  style="width:100%;" data-options=" multiple:true,label: 'Доп опции:',labelPosition: 'top'" >

@@ -97,7 +97,88 @@ public class ControllerJson {
 "select id as id, Name as text, '' as 'desc' from organizations\n" +
 "where AgreementStatus=1\n" +
 "order by Name");
+
+        List result = query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+
+        return result;
+    }
+    
+    
+    
+    
+    @Transactional
+    @RequestMapping(value = "/organization_details", method = RequestMethod.GET,  produces =MediaType.APPLICATION_JSON_VALUE )
+    @ResponseBody
+    public List organization_details_json(@RequestParam(required = true) String q, @RequestParam(required = true) int org_id) {
         
+        System.out.format("organization_details. q = %s\n",q);
+        System.out.format("organization_details. org_id = %d\n",org_id);
+
+        LinkedHashMap map = new LinkedHashMap();
+        
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT DISTINCT\n" +
+"  name as 'text', \n" +
+"  id as id\n" +
+"FROM organization_detail od where od.organizationid=:org_id and name like :q  and is_active=1 order by name");
+        if (q == null)
+            q = "";
+        q = "%"+q+"%";
+        query.setParameter("q", q);
+        query.setParameter("org_id",org_id);
+
+        List result = query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+        
+        return result;
+    }
+    
+    
+    @Transactional
+    @RequestMapping(value = "/organization_sub_details", method = RequestMethod.GET,  produces =MediaType.APPLICATION_JSON_VALUE )
+    @ResponseBody
+    public List organization_sub_details_json(@RequestParam(required = true) String q, @RequestParam(required = true) int org_detail_id) {
+        
+        System.out.format("organization_details. q = %s\n",q);
+        System.out.format("organization_details. org_detail_id = %d\n",org_detail_id);
+
+        LinkedHashMap map = new LinkedHashMap();
+        
+        Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT DISTINCT\n" +
+"  name as 'text', \n" +
+"  id as id\n" +
+"FROM organization_subdetail osd where osd.organization_detail_id=:org_detail_id and name like :q and is_active=1 order by name");
+        if (q == null)
+            q = "";
+        q = "%"+q+"%";
+        query.setParameter("q", q);
+        query.setParameter("org_detail_id",org_detail_id);
+
+        List result = query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+        
+        return result;
+    }
+    
+    
+    
+    
+    
+    @Transactional
+    @RequestMapping(value = "/streets", method = RequestMethod.GET,  produces =MediaType.APPLICATION_JSON_VALUE )
+    @ResponseBody
+    public List streets_json(@RequestParam(required = false) String q) {
+        
+        System.out.println("streets_json. q = \n"+q);
+
+        LinkedHashMap map = new LinkedHashMap();
+        
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(""+
+"SELECT DISTINCT\n" +
+"  street as 'text', \n" +
+"  DENSE_RANK() OVER (ORDER BY street) as id\n" +
+"FROM gis_adresses where city='Ярославль' and state< 10 and  not street like '[__]%'and street like :q");
+        if (q == null)
+            q = "";
+        q = "%"+q+"%";
+        query.setParameter("q", q);
 /*                
         Query query = session.createSQLQuery(
 "select s.stock_code from stock s where s.stock_code = :stockCode")
@@ -128,23 +209,25 @@ public class ControllerJson {
     }
     
     @Transactional
-    @RequestMapping(value = "/streets", method = RequestMethod.GET,  produces =MediaType.APPLICATION_JSON_VALUE )
+    @RequestMapping(value = "/houses", method = RequestMethod.GET,  produces =MediaType.APPLICATION_JSON_VALUE )
     @ResponseBody
-    public List streets_json(@RequestParam(required = false) String q) {
+    public List houses_json(@RequestParam(required = true) String q, @RequestParam(required = true) String s) {
         
-        System.out.println("streets_json. q = \n"+q);
+        System.out.println(String.format("houses_json. q = {0}\n",q));
+        System.out.println(String.format("houses_json. s = {0}\n",s));
 
         LinkedHashMap map = new LinkedHashMap();
         
         Query query = sessionFactory.getCurrentSession().createSQLQuery(""+
 "SELECT DISTINCT\n" +
-"  street as 'text', \n" +
-"  DENSE_RANK() OVER (ORDER BY street) as id\n" +
-"FROM gis_adresses where city='Ярославль' and state< 10 and  not street like '[__]%'and street like :q");
+"  number as 'text', \n" +
+"  DENSE_RANK() OVER (ORDER BY number) as id\n" +
+"FROM gis_adresses where city='Ярославль' and street=:s and state< 10 and number like :q");
         if (q == null)
             q = "";
         q = "%"+q+"%";
         query.setParameter("q", q);
+        query.setParameter("s", s);
 /*                
         Query query = session.createSQLQuery(
 "select s.stock_code from stock s where s.stock_code = :stockCode")
