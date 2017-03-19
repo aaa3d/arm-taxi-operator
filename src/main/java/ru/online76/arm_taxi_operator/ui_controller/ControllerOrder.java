@@ -69,6 +69,7 @@ public class ControllerOrder {
         //ModelAndView modelAndView = new ModelAndView("dialog_edit_order");
         
         Orders edited_order = (Orders) sessionFactory.getCurrentSession().get(Orders.class, orderid);
+        edited_order.PostLoad();
         System.out.println("contains edited_order in cache: " + sessionFactory.getCurrentSession().contains(edited_order));
         //Orders edited_order = (Orders)database.get(Orders.class, orderid);
         

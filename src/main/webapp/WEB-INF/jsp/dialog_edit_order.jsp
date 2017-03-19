@@ -40,19 +40,19 @@ js скрипты - им нужен только путь - его реализ�
         
         
 	<p>
-                    <form:input path="addrFrom"  prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: loaderStreet, method:'get',valueField:'text',textField:'text'" style="width:200px"/> 
+           <form:input path="addrFrom"  prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: loaderStreet, method:'get',valueField:'text',textField:'text'" style="width:200px"/> 
 	   <form:input path="houseFrom"  prompt="Дом" class="easyui-combobox" data-options="mode:'remote', loader: loaderHouseForStreetFrom, method:'get',valueField:'text',textField:'text'" style="width:100px"/> 
 	   <form:input path="flatFrom" prompt="Квартира" class="easyui-textbox" data-options="" style="width:60px"/> 
 	   <form:input path="addrFromName" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/> 
                     
 	</p>
 	<p>
-                    <c:forEach var="i" begin="1" end="4">
-                    <div id="div_dop_address${i}"   <c:if test="${i==3}">  style="display:none"  </c:if>>
-		<form:input path="inerpoint${i}_address" prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: loaderStreet, method:'get',valueField:'text',textField:'text'" style="width:200px"/> 
-		<form:input path="inerpoint${i}_house"  prompt="Дом" class="easyui-combobox" data-options="mode:'remote', loader: loaderHouseForStreet${i}, method:'get',valueField:'text',textField:'text'" style="width:100px"/> 
-		<form:input path="inerpoint${i}_name" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/>
-                                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="onRemoveAddressClick(${i})"></a>
+                <c:forEach var="i" begin="1" end="4">
+                <div id="div_dop_address${i}"   <c:if test="${i==3}">  style="display:none"  </c:if>>
+		<form:input path="Interpointaddress${i}" prompt="Улица" class="easyui-combobox" data-options="mode:'remote', loader: loaderStreet, method:'get',valueField:'text',textField:'text'" style="width:200px"/> 
+		<form:input path="interpointhouse${i}"  prompt="Дом" class="easyui-combobox" data-options="mode:'remote', loader: loaderHouseForStreet${i}, method:'get',valueField:'text',textField:'text'" style="width:100px"/> 
+		<form:input path="interpointname${i}" prompt="Место" class="easyui-textbox" data-options="" style="width:120px"/>
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="onRemoveAddressClick(${i})"></a>
                         </div>
                     </c:forEach>
                     
