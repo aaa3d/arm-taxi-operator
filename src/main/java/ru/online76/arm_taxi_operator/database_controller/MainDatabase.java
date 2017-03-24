@@ -77,7 +77,7 @@ public class MainDatabase {
 
             Session session = sessionFactory.getCurrentSession();
             org.hibernate.Criteria criteria = session.createCriteria(Orders.class);
-            criteria.add(Restrictions.sqlRestriction("dtArrive>getdate()-3.0/1"));
+            criteria.add(Restrictions.sqlRestriction("dtArrive>getdate()-10.0/1"));
             if (sort_field_name != null) {
                 if (sort_direction.compareTo("asc") == 0) {
                     criteria.addOrder(org.hibernate.criterion.Order.asc(sort_field_name));

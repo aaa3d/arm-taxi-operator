@@ -118,7 +118,7 @@ public class ControllerJson {
         
         Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT DISTINCT\n" +
 "  name as 'text', \n" +
-"  id as id\n" +
+"  id as id, '' as 'desc'\n" +
 "FROM organization_detail od where od.organizationid=:org_id and name like :q  and is_active=1 order by name");
         if (q == null)
             q = "";
@@ -142,9 +142,10 @@ public class ControllerJson {
 
         LinkedHashMap map = new LinkedHashMap();
         
+        
         Query query = sessionFactory.getCurrentSession().createSQLQuery("SELECT DISTINCT\n" +
 "  name as 'text', \n" +
-"  id as id\n" +
+"  id as id, '' as 'desc'\n" +
 "FROM organization_subdetail osd where osd.organization_detail_id=:org_detail_id and name like :q and is_active=1 order by name");
         if (q == null)
             q = "";
